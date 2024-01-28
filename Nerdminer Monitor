@@ -1,0 +1,104 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Stato del NerdMiner</title>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 0;
+            padding: 0;
+            background-color: #f0f0f0;
+        }
+        .container {
+            width: 80%;
+            margin: 0 auto;
+            padding: 20px;
+            background-color: #fff;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        h1 {
+            color: #333;
+            text-align: center;
+            margin-bottom: 20px;
+        }
+        label, input, button {
+            display: block;
+            margin-bottom: 20px;
+        }
+        input {
+            width: 50%;
+            padding: 10px;
+            border: none;
+            border-radius: 5px;
+        }
+        button {
+            padding: 10px 20px;
+            border: none;
+            border-radius: 5px;
+            background-color: #333;
+            color: #fff;
+            cursor: pointer;
+        }
+        .info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 20px;
+            padding: 20px;
+            background-color: #f9f9f9;
+            border-radius: 5px;
+            box-shadow: 0px 0px 10px 0px rgba(0,0,0,0.1);
+        }
+        .info h2 {
+            margin: 0;
+            color: #666;
+        }
+        .info p {
+            margin: 0;
+            color: #333;
+            font-weight: bold;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Stato del NerdMiner</h1>
+        <label for="ipAddress">Inserisci l'indirizzo IP del tuo NerdMiner:</label>
+        <input type="text" id="ipAddress" name="ipAddress">
+        <button onclick="updateStatus()">Aggiorna stato</button>
+        <div class="info">
+            <h2>Stato di connessione: </h2><p id="connectionStatus">Caricamento...</p>
+        </div>
+        <div class="info">
+            <h2>Blocchi validi: </h2><p id="validBlocks">Caricamento...</p>
+        </div>
+        <div class="info">
+            <h2>Hash totali: </h2><p id="totalHashes">Caricamento...</p>
+        </div>
+        <div class="info">
+            <h2>Hashrate corrente: </h2><p id="currentHashrate">Caricamento...</p>
+        </div>
+        <div class="info">
+            <h2>Blocco corrente: </h2><p id="currentBlock">Caricamento...</p>
+        </div>
+        <div class="info">
+            <h2>Hashrate della rete: </h2><p id="networkHashrate">Caricamento...</p>
+        </div>
+    </div>
+
+    <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.5.1/jquery.min.js"></script>
+    <script>
+    function updateStatus() {
+        var ip = document.getElementById('ipAddress').value;
+        $.get('http://' + ip + '/stato', function(data){
+            $('#connectionStatus').html(data.connesso ? 'Connesso' : 'Non connesso');
+            $('#validBlocks').html(data.blocchiValidi);
+            $('#totalHashes').html(data.hashTotali);
+            $('#currentHashrate').html(data.hashrateCorrente + ' H/s');
+            $('#currentBlock').html(data.bloccoCorrente);
+            $('#networkHashrate').html(data.hashrateRete + ' H/s');
+        });
+    }
+    </script>
+</body>
+</html>
